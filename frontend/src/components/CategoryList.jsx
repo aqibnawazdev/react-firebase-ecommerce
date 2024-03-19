@@ -3,7 +3,7 @@ import { FaArrowRight, FaChevronRight } from "react-icons/fa6";
 
 function CategoryList() {
   return (
-    <ul className="list-inside hidden md:block w-[30%]">
+    <ul className="list-inside hidden md:block w-[20%] border-r border-b-slate-400 me-5">
       <li className="flex gap-2 items-center text-black cursor-pointer my-2">
         Men's fashion <FaChevronRight size={10} />
       </li>

@@ -7,7 +7,7 @@ import { RiCloseLine } from "react-icons/ri";
 function Header() {
   const [toggleMenu, setToggleMenu] = useState(false);
   return (
-    <div className="app">
+    <div className="app border-b">
       <nav>
         <div className="max-w-7xl mx-auto">
           <div className="flex mx-auto justify-between w-5/6 ">
@@ -19,12 +19,12 @@ function Header() {
                 </span>
               </a>
               {/* primary menu*/}
-              <div className="hidden lg:flex gap-8 ">
+              <div className="hidden lg:flex">
                 <ul className="flex flex-col mt-4 font-medium lg:flex-row lg:space-x-8 lg:mt-0">
                   <li>
                     <a
                       href="#"
-                      className="block py-2 pr-4 pl-3  rounded bg-primary-70 hover:underline"
+                      className="block py-2 pl-3  rounded bg-primary-70 hover:underline"
                       aria-current="page"
                     >
                       Home
@@ -33,7 +33,7 @@ function Header() {
                   <li>
                     <a
                       href="#"
-                      className="block py-2 pr-4 pl-3 text-gray-700 hover:underline"
+                      className="block py-2 pl-3 text-gray-700 hover:underline"
                     >
                       Contact
                     </a>
@@ -41,7 +41,7 @@ function Header() {
                   <li>
                     <a
                       href="#"
-                      className="block py-2 pr-4 pl-3 text-gray-700 hover:underline"
+                      className="block py-2 pl-3 text-gray-700 hover:underline"
                     >
                       About
                     </a>
@@ -49,7 +49,7 @@ function Header() {
                   <li>
                     <a
                       href="#"
-                      className="block py-2 pr-4 pl-3 text-gray-70 hover:underline"
+                      className="block py-2 pl-3 text-gray-70 hover:underline"
                     >
                       Sign Up
                     </a>
@@ -60,8 +60,8 @@ function Header() {
             {/* secondary menu*/}
             <div className="hidden lg:flex items-center justify-between">
               <div className="xs:flex items-center ">
-                <div className="lg:order-2">
-                  <div className="search-box bg-gray-100 sm:flex justify-center items-center py-1 hidden">
+                <div className="lg:order-2 flex items-center">
+                  <div className="search-box bg-gray-100 hidden sm:flex justify-center items-center py-1">
                     <input
                       type="search"
                       className="bg-gray-100 focus:outline-none ms-2"
