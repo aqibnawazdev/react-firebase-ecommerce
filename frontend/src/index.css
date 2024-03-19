@@ -24,7 +24,15 @@ a:hover {
   width: 100%;
   height: auto;
 }
-
+.productCard:hover .addToCart-btn {
+  display: block !important;
+  background-color: black;
+  cursor: pointer;
+}
+.productCard {
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+}
 .swiper-slide {
   background-color: black;
   /* Center slide text vertically */

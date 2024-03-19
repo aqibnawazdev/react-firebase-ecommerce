@@ -4,6 +4,7 @@ import HeroSlider from "./components/HeroSlider";
 import ProductCard from "./components/ProductCard";
 import SectionTitle from "./components/SectionCatTitle";
 import TopBar from "./components/TopBar";
+import CategorySection from "./Sections/CategorySection";
 import HeroSection from "./Sections/HeroSection";
 import TodayFlashSaleSection from "./Sections/TodayFlashSaleSection";
 
@@ -14,6 +15,7 @@ export default function App() {
       <Header />
       <HeroSection />
       <TodayFlashSaleSection />
+      <CategorySection />
     </div>
   );
 }
