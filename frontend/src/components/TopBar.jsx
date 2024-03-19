@@ -3,9 +3,9 @@ import { FaChevronDown } from "react-icons/fa6";
 
 function TopBar() {
   return (
-    <div className="bg-black text-white py-1 w-full">
+    <div className="bg-black text-white py-1 hidden sm:flex sm:w-full">
       <div className="w-[90%] flex justify-end">
-        <div className=" w-[70%] flex justify-between items-center">
+        <div className="w-[90%] md:w-[70%]  flex justify-between items-center">
           <div className="flex justify-center ">
             <p className="text-[14px]">
               Summer Sale For All Swim Suits And Free Express Delivery - OFF
