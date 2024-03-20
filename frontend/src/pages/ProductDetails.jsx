@@ -11,6 +11,20 @@ import ProductCard from "../components/ProductCard";
 function ProductDetails({ name, desc, price, ratings, colors }) {
   const [selectedView, setSelectedView] = useState(null);
   const [quantity, setQuantity] = useState(1);
+
+  const handleQuantityPlus = () => {
+    setQuantity((prev) => {
+      return prev + 1;
+    });
+  };
+  const handleQuantityMinus = () => {
+    setQuantity((prev) => {
+      if (prev < 1) {
+        return 0;
+      }
+      return prev - 1;
+    });
+  };
   return (
     <>
       <div className="w-full flex justify-center items-center mt-10">
@@ -31,7 +45,7 @@ function ProductDetails({ name, desc, price, ratings, colors }) {
             {/* Product imag view Column */}
             <div className="img-view flex-grow md:w-[70%] bg-gray-200 p-2 flex items-center justify-center ">
               <img
-                src={selectedView ? selectedView : "./img/gamepad-top.png"}
+                src={selectedView ? selectedView : "/img/gamepad-top.png"}
                 alt=""
                 width={300}
                 height={350}
@@ -106,13 +120,19 @@ function ProductDetails({ name, desc, price, ratings, colors }) {
 
             <div className="actions mt-9 flex gap-5">
               <div className="quantity flex">
-                <button className="sub text-2xl p-4 text-gray-600 w-[30px] rounded-l h-[30px] flex items-center justify-center bg-white  border border-gray-500">
+                <button
+                  className="sub text-2xl p-4 text-gray-600 w-[30px] rounded-l h-[30px] flex items-center justify-center bg-white  border border-gray-500"
+                  onClick={() => handleQuantityMinus()}
+                >
                   -
                 </button>
                 <div className="quantity text-2xl p-4 text-gray-600 w-[70px]   h-[30px] flex items-center justify-center bg-white  border border-gray-500">
                   {quantity}
                 </div>
-                <button className="add text-2xl p-4 text-white w-[30px] rounded-r  h-[30px] flex items-center justify-center border-red-500  border bg-red-500">
+                <button
+                  className="add text-2xl p-4 text-white w-[30px] rounded-r  h-[30px] flex items-center justify-center border-red-500  border bg-red-500"
+                  onClick={() => handleQuantityPlus()}
+                >
                   +
                 </button>
               </div>
@@ -152,6 +172,7 @@ function ProductDetails({ name, desc, price, ratings, colors }) {
         </div>
       </div>
 
+      {/* Related Product section */}
       <section className="w-full flex justify-center items-center">
         <div className="w-[90%] border-t mt-10 flex flex-col justify-start">
           <SectionTitle catTitle={"Related items"} />

@@ -1,26 +1,23 @@
 import CategoryList from "./components/CategoryList";
 import Header from "./components/Header";
-import HeroSlider from "./components/HeroSlider";
-import ProductCard from "./components/ProductCard";
-import SectionTitle from "./components/SectionCatTitle";
 import TopBar from "./components/TopBar";
 import AuthLogin from "./pages/AuthLogin";
 import AuthRegister from "./pages/AuthRegister";
+import Home from "./pages/Home";
+
+import { Routes, Route, Navigate } from "react-router-dom";
 import ProductDetails from "./pages/ProductDetails";
-import CategorySection from "./sections/CategorySection";
-import HeroSection from "./sections/HeroSection";
-import TodayFlashSaleSection from "./sections/TodayFlashSaleSection";
 export default function App() {
   return (
-    <div className="w-full">
+    <div>
       <TopBar />
       <Header />
-      {/* <HeroSection />
-      <TodayFlashSaleSection />
-      <CategorySection /> */}
-      {/* <AuthRegister /> */}
-      {/* <AuthLogin /> */}
-      <ProductDetails />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/auth/login" element={<AuthLogin />} />
+        <Route path="/auth/register" element={<AuthRegister />} />
+        <Route path="/product/:id" element={<ProductDetails replace />} />
+      </Routes>
     </div>
   );
 }

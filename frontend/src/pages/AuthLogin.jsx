@@ -1,5 +1,4 @@
 import React from "react";
-import { FcGoogle } from "react-icons/fc";
 
 function AuthLogin() {
   return (
@@ -7,10 +6,10 @@ function AuthLogin() {
       <div className="w-[90%] object-contain flex md:justify-between justify-center items-center shadow md:shadow-none py-5 md:py-3  gap-10">
         <div className="left w-[50%] hidden md:block">
           <img
-            src="./img/auth-screen-img.png"
+            src="/img/auth-screen-img.png"
             alt=""
             height={200}
-            className="img overflow-hidden"
+            className="img"
           />
         </div>
         <div className="md:w-[40%] w-[90%]">
