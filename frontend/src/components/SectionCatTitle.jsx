@@ -7,7 +7,7 @@ function SectionTitle({ catTitle, sectionTitle, timer, button }) {
         <h1 className=" text-red-500">{catTitle}</h1>
       </div>
       <div className="bottom mt-2 flex justify-between">
-        <div className="left flex gap-10">
+        <div className="left flex flex-col sm:flex-row gap-10">
           <span className="text-black text-2xl font-semibold">
             {sectionTitle}
           </span>

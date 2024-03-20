@@ -31,7 +31,7 @@ const product = [
 function TodayFlashSaleSection() {
   return (
     <section className="w-full flex flex-col justify-center items-center">
-      <div className="w-[90%]  border-t mt-10">
+      <div className="w-[90%] border-t mt-10">
         <SectionTitle
           catTitle={"Today's"}
           sectionTitle={"Flash Sales"}
