@@ -30,7 +30,7 @@ const categories = [
 function CategorySection() {
   return (
     <section className="w-full flex flex-col justify-center items-center">
-      <div className="w-[90%]  border-t mt-5">
+      <div className="w-[90%] border-t mt-5">
         <SectionTitle
           catTitle={"Categories"}
           sectionTitle={"Browse By Category"}
