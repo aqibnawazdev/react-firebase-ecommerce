@@ -17,7 +17,7 @@ function ProductCard({
   const { state, dispatch } = useContext(GlobalContext);
 
   const handleCartItemCount = () => {
-    dispatch({ type: "CART_ITEM_COUNT" });
+    dispatch({ type: "CART_ITEM_COUNT", payload: { num: 1 } });
   };
   const handleAddToCart = (item) => {
     const duplicate = state.cart.find((p) => p.id === item.id);

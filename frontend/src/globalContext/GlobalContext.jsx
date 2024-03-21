@@ -20,7 +20,7 @@ const GlobalReducer = (state, action) => {
     case "CART_ITEM_COUNT":
       return {
         ...state,
-        cartItemCount: state.cartItemCount + 1,
+        cartItemCount: state.cartItemCount + action.payload.num,
       };
     case "UPDATE_QUANTITY":
       return {
@@ -38,6 +38,11 @@ const GlobalReducer = (state, action) => {
           (total, item) => item.price * item.quantity + total,
           0
         ),
+      };
+    case "REMOVE_CART_ITEM":
+      return {
+        ...state,
+        cart: state.cart.filter((item) => item.id !== action.payload.id),
       };
 
     default:

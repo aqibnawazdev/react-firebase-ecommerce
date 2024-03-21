@@ -3,7 +3,12 @@ import { product } from "../data";
 import { GlobalContext } from "../globalContext/GlobalContext";
 
 function Cart() {
-  const { state } = useContext(GlobalContext);
+  const { state, dispatch } = useContext(GlobalContext);
+  const handlCartItemDelete = (id, quantity) => {
+    dispatch({ type: "REMOVE_CART_ITEM", payload: { id } });
+    dispatch({ type: "UPDATE_TOTAL" });
+    dispatch({ type: "CART_ITEM_COUNT", payload: { num: -quantity } });
+  };
   return (
     <div className="w-full flex flex-col justify-center items-center mt-10">
       <table className="table-auto w-[90%]  overflow-x-auto text-left ">
@@ -27,7 +32,10 @@ function Cart() {
           {state.cart.map((p) => (
             <tr key={p.id} className="items-start shadow-sm">
               <td scope="col" className="flex items-center py-2 gap-2 relative">
-                <button className="bg-red-500 cart-prod-remove-btn absolute top-1 left-[-10px] rounded-full w-4 h-4 text-[10px] text-white">
+                <button
+                  className="bg-red-500 cart-prod-remove-btn absolute top-1 left-[-10px] rounded-full w-4 h-4 text-[10px] text-white"
+                  onClick={() => handlCartItemDelete(p.id, p.quantity)}
+                >
                   X
                 </button>
                 <img src={`/img/${p.src}`} alt="" width={50} />
