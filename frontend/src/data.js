@@ -5,7 +5,7 @@ export const product = [
         title: "HAVIT HV-G92 Gamepad",
         price: 120,
         originalPrice: 160,
-        img: "/img/gamepad.png",
+        img: "/gamepad.png",
     },
     {
         id: 2,
@@ -13,7 +13,7 @@ export const product = [
         title: "AK-900 Wired Keyboard",
         price: 960,
         originalPrice: 1130,
-        img: "/img/keyboard.png",
+        img: "/keyboard.png",
     },
     {
         id: 3,
@@ -21,7 +21,7 @@ export const product = [
         title: "IPS LCD Gaming Monitor",
         price: 370,
         originalPrice: 470,
-        img: "/img/display.png",
+        img: "/display.png",
     },
     {
         id: 4,
@@ -29,7 +29,7 @@ export const product = [
         title: "S-Series Comfort Chair",
         price: 378,
         originalPrice: 450,
-        img: "/img/chair.png",
+        img: "/chair.png",
     },
 ];
 

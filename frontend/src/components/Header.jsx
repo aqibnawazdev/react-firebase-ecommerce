@@ -1,13 +1,15 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { IoCartOutline } from "react-icons/io5";
 import { CiHeart, CiSearch } from "react-icons/ci";
 import { CgMenuRight } from "react-icons/cg";
 import { RiCloseLine } from "react-icons/ri";
 import { Link } from "react-router-dom";
+import { GlobalContext } from "../globalContext/GlobalContext";
 function Header() {
   const [toggleMenu, setToggleMenu] = useState(false);
+  const { state } = useContext(GlobalContext);
   return (
-    <div className="app border-b">
+    <div className="app border-b sticky z-20 bg-white top-0 left-0">
       <nav>
         <div className="max-w-7xl mx-auto">
           <div className="flex mx-auto justify-between w-5/6 ">
@@ -77,10 +79,20 @@ function Header() {
                     <CiSearch size={20} className="me-1 font-bold" />
                   </div>
                   <Link to={"/wishlist"}>
-                    <CiHeart size={25} className="mx-2 cursor-pointer" />
+                    <span className="relative">
+                      <CiHeart size={25} className="mx-2 cursor-pointer" />
+                      <button className="bg-red-500 w-4 h-4 rounded-full text-[10px] text-white absolute top-[-8px]">
+                        {2}
+                      </button>
+                    </span>
                   </Link>
                   <Link to={"/cart"}>
-                    <IoCartOutline size={25} className="cursor-pointer" />
+                    <span className="relative">
+                      <IoCartOutline size={25} className="cursor-pointer" />
+                      <button className="bg-red-500 w-4 h-4 rounded-full text-[10px] text-white absolute top-[-8px]">
+                        {state.cartItemCount}
+                      </button>
+                    </span>
                   </Link>
                 </div>
               </div>
