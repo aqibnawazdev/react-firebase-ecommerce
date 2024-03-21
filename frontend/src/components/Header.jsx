@@ -3,7 +3,7 @@ import { IoCartOutline } from "react-icons/io5";
 import { CiHeart, CiSearch } from "react-icons/ci";
 import { CgMenuRight } from "react-icons/cg";
 import { RiCloseLine } from "react-icons/ri";
-
+import { Link } from "react-router-dom";
 function Header() {
   const [toggleMenu, setToggleMenu] = useState(false);
   return (
@@ -22,37 +22,45 @@ function Header() {
               <div className="hidden lg:flex">
                 <ul className="flex flex-col mt-4 font-medium lg:flex-row lg:space-x-8 lg:mt-0">
                   <li>
-                    <a
-                      href="#"
-                      className="block py-2 pl-3  rounded bg-primary-70 hover:underline"
-                      aria-current="page"
-                    >
-                      Home
-                    </a>
+                    <Link to={"/"}>
+                      <a
+                        href="#"
+                        className="block py-2 pl-3  rounded bg-primary-70 hover:underline"
+                        aria-current="page"
+                      >
+                        Home
+                      </a>
+                    </Link>
                   </li>
                   <li>
-                    <a
-                      href="#"
-                      className="block py-2 pl-3 text-gray-700 hover:underline"
-                    >
-                      Contact
-                    </a>
+                    <Link to={"/contact"}>
+                      <a
+                        href="#"
+                        className="block py-2 pl-3 text-gray-700 hover:underline"
+                      >
+                        Contact
+                      </a>
+                    </Link>
                   </li>
                   <li>
-                    <a
-                      href="#"
-                      className="block py-2 pl-3 text-gray-700 hover:underline"
-                    >
-                      About
-                    </a>
+                    <Link to={"/about"}>
+                      <a
+                        href="#"
+                        className="block py-2 pl-3 text-gray-700 hover:underline"
+                      >
+                        About
+                      </a>
+                    </Link>
                   </li>
                   <li>
-                    <a
-                      href="#"
-                      className="block py-2 pl-3 text-gray-70 hover:underline"
-                    >
-                      Sign Up
-                    </a>
+                    <Link to={"/auth/register"}>
+                      <a
+                        href="#"
+                        className="block py-2 pl-3 text-gray-70 hover:underline"
+                      >
+                        Sign Up
+                      </a>
+                    </Link>
                   </li>
                 </ul>
               </div>
@@ -68,8 +76,12 @@ function Header() {
                     />
                     <CiSearch size={20} className="me-1 font-bold" />
                   </div>
-                  <CiHeart size={25} className="mx-2 cursor-pointer" />
-                  <IoCartOutline size={25} className="cursor-pointer" />
+                  <Link to={"/wishlist"}>
+                    <CiHeart size={25} className="mx-2 cursor-pointer" />
+                  </Link>
+                  <Link to={"/cart"}>
+                    <IoCartOutline size={25} className="cursor-pointer" />
+                  </Link>
                 </div>
               </div>
             </div>
@@ -103,28 +115,45 @@ function Header() {
               <div className="gap-8 ">
                 <ul className="flex flex-col mt-4 font-medium lg:flex-row lg:space-x-8 lg:mt-0">
                   <li className="hover:bg-slate-200">
-                    <a
-                      href="#"
-                      className="block py-2 pr-4 pl-3 text-gray-700 hover:text-gray-900"
-                      aria-current="page"
-                    >
-                      Home
-                    </a>
+                    <Link>
+                      <a
+                        href="#"
+                        className="block py-2 pr-4 pl-3 text-gray-700 hover:text-gray-900"
+                        aria-current="page"
+                      >
+                        Home
+                      </a>
+                    </Link>
                   </li>
                   <li className="hover:bg-slate-200">
-                    <a href="#" className="block py-2 pr-4 pl-3 text-gray-700 ">
-                      Contact
-                    </a>
+                    <Link to={"/"}>
+                      <a
+                        href="#"
+                        className="block py-2 pr-4 pl-3 text-gray-700 "
+                      >
+                        Contact
+                      </a>
+                    </Link>
                   </li>
                   <li className="hover:bg-slate-200">
-                    <a href="#" className="block py-2 pr-4 pl-3 text-gray-700 ">
-                      About
-                    </a>
+                    <Link to={"/about"}>
+                      <a
+                        href="#"
+                        className="block py-2 pr-4 pl-3 text-gray-700 "
+                      >
+                        About
+                      </a>
+                    </Link>
                   </li>
                   <li className="hover:bg-slate-200">
-                    <a href="#" className="block py-2 pr-4 pl-3 text-gray-700 ">
-                      Sign Up
-                    </a>
+                    <Link to={"/auth/register"}>
+                      <a
+                        href="#"
+                        className="block py-2 pr-4 pl-3 text-gray-700 "
+                      >
+                        Sign Up
+                      </a>
+                    </Link>
                   </li>
                 </ul>
               </div>

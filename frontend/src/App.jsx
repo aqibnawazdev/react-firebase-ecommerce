@@ -7,6 +7,7 @@ import Home from "./pages/Home";
 
 import { Routes, Route, Navigate } from "react-router-dom";
 import ProductDetails from "./pages/ProductDetails";
+import Cart from "./pages/Cart";
 export default function App() {
   return (
     <div>
@@ -16,6 +17,7 @@ export default function App() {
         <Route path="/" element={<Home />} />
         <Route path="/auth/login" element={<AuthLogin />} />
         <Route path="/auth/register" element={<AuthRegister />} />
+        <Route path="/cart" element={<Cart />} />
         <Route path="/product/:id" element={<ProductDetails replace />} />
       </Routes>
     </div>

@@ -1,5 +1,6 @@
 import React from "react";
 import { FcGoogle } from "react-icons/fc";
+import { Link } from "react-router-dom";
 
 function AuthRegister() {
   return (
@@ -51,6 +52,12 @@ function AuthRegister() {
               <span className="text-md">Singup with Google</span>
             </button>
           </form>
+          <Link to={"/auth/login"}>
+            <button className="text-sm mt-5">
+              Already have an account?{" "}
+              <span className="text-sm underline">Login</span>
+            </button>
+          </Link>
         </div>
       </div>
     </div>

@@ -21,6 +21,7 @@ function TodayFlashSaleSection() {
               price={m.price}
               orignalPrice={m.originalPrice}
               discount={40}
+              id={m.id}
             />
           ))}
         </div>

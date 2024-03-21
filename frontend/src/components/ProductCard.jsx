@@ -2,7 +2,8 @@ import React from "react";
 import { CiHeart } from "react-icons/ci";
 import { IoEyeOutline } from "react-icons/io5";
 import "../index.css";
-function ProductCard({ src, sale, name, price, orignalPrice, discount }) {
+import { Link } from "react-router-dom";
+function ProductCard({ src, id, sale, name, price, orignalPrice, discount }) {
   return (
     <div className="w-[100%] sm:w-[40%] md:w-[30%] lg:w-[23%] productCard shadow h-[330px] mt-3 rounded relative ">
       {discount && (
@@ -11,11 +12,15 @@ function ProductCard({ src, sale, name, price, orignalPrice, discount }) {
         </button>
       )}
       <div className="actions flex flex-col gap-2 items-center absolute top-4 right-4">
-        <CiHeart className="bg-white rounded-full cursor-pointer" size={20} />
-        <IoEyeOutline
-          className="bg-white rounded-full cursor-pointer"
-          size={20}
-        />
+        <Link to={"/whishlist"}>
+          <CiHeart className="bg-white rounded-full cursor-pointer" size={20} />
+        </Link>
+        <Link to={`/product/${id}`}>
+          <IoEyeOutline
+            className="bg-white rounded-full cursor-pointer"
+            size={20}
+          />
+        </Link>
       </div>
       <div className="bg-gray-100 h-[75%] flex flex-col items-center justify-evenly ">
         <img src={src} alt="" className="object-contain" />
