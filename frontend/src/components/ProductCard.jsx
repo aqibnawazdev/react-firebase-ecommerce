@@ -1,9 +1,38 @@
-import React from "react";
+import React, { useContext } from "react";
 import { CiHeart } from "react-icons/ci";
 import { IoEyeOutline } from "react-icons/io5";
 import "../index.css";
 import { Link } from "react-router-dom";
-function ProductCard({ src, id, sale, name, price, orignalPrice, discount }) {
+import { GlobalContext } from "../globalContext/GlobalContext";
+function ProductCard({
+  src,
+  id,
+  sale,
+  desc,
+  name,
+  price,
+  orignalPrice,
+  discount,
+}) {
+  const { state, dispatch } = useContext(GlobalContext);
+
+  const handleCartItemCount = () => {
+    dispatch({ type: "CART_ITEM_COUNT" });
+  };
+  const handleAddToCart = (item) => {
+    const duplicate = state.cart.find((p) => p.id === item.id);
+
+    if (!duplicate) {
+      dispatch({ type: "ADD_TO_CART", payload: item });
+      dispatch({ type: "UPDATE_TOTAL" });
+    } else {
+      dispatch({
+        type: "UPDATE_QUANTITY",
+        payload: { id: item.id, quantity: 1 },
+      });
+      dispatch({ type: "UPDATE_TOTAL" });
+    }
+  };
   return (
     <div className="w-[100%] sm:w-[40%] md:w-[30%] lg:w-[23%] productCard shadow h-[330px] mt-3 rounded relative ">
       {discount && (
@@ -23,8 +52,14 @@ function ProductCard({ src, id, sale, name, price, orignalPrice, discount }) {
         </Link>
       </div>
       <div className="bg-gray-100 h-[75%] flex flex-col items-center justify-evenly ">
-        <img src={src} alt="" className="object-contain" />
-        <button className="bg-transparent text-gray-100 hover:text-white w-full py-2 addToCart-btn absolute bottom-20">
+        <img src={`/img/${src}`} alt="" className="object-contain" />
+        <button
+          className="bg-transparent text-gray-100 hover:text-white w-full py-2 addToCart-btn absolute bottom-20"
+          onClick={() => (
+            handleCartItemCount(),
+            handleAddToCart({ id, src, name, desc, price, quantity: 1 })
+          )}
+        >
           Add to Cart
         </button>
       </div>

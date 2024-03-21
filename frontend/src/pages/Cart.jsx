@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useContext } from "react";
 import { product } from "../data";
+import { GlobalContext } from "../globalContext/GlobalContext";
 
 function Cart() {
+  const { state } = useContext(GlobalContext);
   return (
     <div className="w-full flex flex-col justify-center items-center mt-10">
       <table className="table-auto w-[90%]  overflow-x-auto text-left ">
@@ -22,13 +24,13 @@ function Cart() {
           </tr>
         </thead>
         <tbody className=" mt-6">
-          {product.map((p) => (
+          {state.cart.map((p) => (
             <tr key={p.id} className="items-start shadow-sm">
               <td scope="col" className="flex items-center py-2 gap-2 relative">
                 <button className="bg-red-500 cart-prod-remove-btn absolute top-1 left-[-10px] rounded-full w-4 h-4 text-[10px] text-white">
                   X
                 </button>
-                <img src={p.img} alt="" width={50} />
+                <img src={`/img/${p.src}`} alt="" width={50} />
                 <span className="text-xs sm:text-sm">{p.title}</span>
               </td>
               <td scope="col" className=" py-2">
@@ -39,12 +41,12 @@ function Cart() {
                   <input
                     className="w-[45px] py-1 ps-2 border"
                     type="number"
-                    defaultValue={1}
+                    defaultValue={p.quantity}
                   />
                 </div>
               </td>
               <td scope="col" className="py-2">
-                ${p.price}
+                ${p.price * p.quantity}
               </td>
             </tr>
           ))}
@@ -69,7 +71,7 @@ function Cart() {
           <h2>Cart Total</h2>
           <div className="border-b border-b-black flex justify-between">
             <span className="text-sm">Subtotal: </span>
-            <span className="text-sm">${"1080"}</span>
+            <span className="text-sm">${state.totalPrice}</span>
           </div>
           <div className="border-b  border-b-black flex justify-between">
             <span className="text-sm">Shipping: </span>
@@ -77,7 +79,7 @@ function Cart() {
           </div>
           <div className=" flex justify-between mt-2">
             <span className="text-sm font-semibold">Total: </span>
-            <span className="text-sm font-semibold">${1800}</span>
+            <span className="text-sm font-semibold">${state.totalPrice}</span>
           </div>
           <div className="self-center">
             <button className="bg-red-500 py-1 px-2 rounded text-white text-sm">
