@@ -40,3 +40,10 @@ a:hover {
   justify-content: center !important;
   align-items: center;
 }
+.cart-prod-remove-btn {
+  display: none;
+}
+
+tbody tr td:hover .cart-prod-remove-btn {
+  display: block;
+}
