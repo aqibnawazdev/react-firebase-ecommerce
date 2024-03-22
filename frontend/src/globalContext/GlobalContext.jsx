@@ -1,15 +1,18 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useContext, useReducer, createContext } from "react";
 import { product } from "../data";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "../config/firebase.config";
 
 const initialState = {
   cart: [],
   cartItemCount: 0,
+  currentUser: {},
 };
 
 export const GlobalContext = createContext("");
 const GlobalReducer = (state, action) => {
-  console.log(action.payload, "payload");
+  console.log(action.payload);
   switch (action.type) {
     case "ADD_TO_CART":
       return {
@@ -33,6 +36,11 @@ const GlobalReducer = (state, action) => {
             : item
         ),
       };
+    case "AUTH_STATE_CHANGE":
+      return {
+        ...state,
+        currentUser: action.payload,
+      };
 
     default:
       return state;
@@ -40,7 +48,22 @@ const GlobalReducer = (state, action) => {
 };
 const GolbalContextProvider = ({ children }) => {
   const [state, dispatch] = useReducer(GlobalReducer, initialState);
-  console.log(state);
+  useEffect(() => {
+    const unsub = onAuthStateChanged(auth, (user) => {
+      const userdata = {
+        name: user.displayName,
+        phoneNumber: user.phoneNumber,
+        email: user.email,
+        photoURL: user.photoURL,
+        userId: user.uid,
+      };
+      if (user) {
+        dispatch({ type: "AUTH_STATE_CHANGE", payload: userdata });
+      } else {
+      }
+    });
+    return () => unsub();
+  }, []);
 
   return (
     <GlobalContext.Provider value={{ state, dispatch }}>

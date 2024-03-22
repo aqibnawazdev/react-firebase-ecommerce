@@ -1,6 +1,7 @@
 import React, { startTransition, useContext, useState } from "react";
 import { IoCartOutline } from "react-icons/io5";
 import { CiHeart, CiSearch } from "react-icons/ci";
+import { CiUser } from "react-icons/ci";
 import { CgMenuRight } from "react-icons/cg";
 import { RiCloseLine } from "react-icons/ri";
 import { Link } from "react-router-dom";
@@ -8,6 +9,7 @@ import { GlobalContext } from "../globalContext/GlobalContext";
 function Header() {
   const [toggleMenu, setToggleMenu] = useState(false);
   const { state } = useContext(GlobalContext);
+
   const cartItemTotal = () => {
     return state.cart.reduce(
       (total, currentItem) => currentItem.quantity + total,
@@ -31,44 +33,37 @@ function Header() {
                 <ul className="flex flex-col mt-4 font-medium lg:flex-row lg:space-x-8 lg:mt-0">
                   <li>
                     <Link to={"/"}>
-                      <a
+                      <span
                         href="#"
                         className="block py-2 pl-3  rounded bg-primary-70 hover:underline"
                         aria-current="page"
                       >
                         Home
-                      </a>
+                      </span>
                     </Link>
                   </li>
                   <li>
                     <Link to={"/contact"}>
-                      <a
-                        href="#"
-                        className="block py-2 pl-3 text-gray-700 hover:underline"
-                      >
+                      <span className="block py-2 pl-3 text-gray-700 hover:underline">
                         Contact
-                      </a>
+                      </span>
                     </Link>
                   </li>
                   <li>
                     <Link to={"/about"}>
-                      <a
-                        href="#"
-                        className="block py-2 pl-3 text-gray-700 hover:underline"
-                      >
+                      <span className="block py-2 pl-3 text-gray-700 hover:underline">
                         About
-                      </a>
+                      </span>
                     </Link>
                   </li>
                   <li>
-                    <Link to={"/auth/register"}>
-                      <a
-                        href="#"
-                        className="block py-2 pl-3 text-gray-70 hover:underline"
-                      >
-                        Sign Up
-                      </a>
-                    </Link>
+                    {!state?.currentUser?.name && (
+                      <Link to={"/auth/register"}>
+                        <span className="block py-2 pl-3 text-gray-70 hover:underline">
+                          Sign Up
+                        </span>
+                      </Link>
+                    )}
                   </li>
                 </ul>
               </div>
@@ -76,7 +71,7 @@ function Header() {
             {/* secondary menu*/}
             <div className="hidden lg:flex items-center justify-between">
               <div className="xs:flex items-center ">
-                <div className="lg:order-2 flex items-center">
+                <div className="lg:order-2 flex gap-2 items-center">
                   <div className="search-box bg-gray-100 hidden sm:flex justify-center items-center py-1">
                     <input
                       type="search"
@@ -100,12 +95,25 @@ function Header() {
                       </button>
                     </span>
                   </Link>
+                  {state?.currentUser.photoURL && (
+                    <span className="relative">
+                      <div className="cursor-pointer w-[25px] h-[25px] rounded-full">
+                        {(
+                          <img
+                            src={state.currentUser.photoURL}
+                            alt=""
+                            className="rounded-full"
+                          />
+                        ) || <CiUser size={25} />}
+                      </div>
+                    </span>
+                  )}
                 </div>
               </div>
             </div>
 
             {/* Mobile navigation toggle */}
-            <div className="lg:hidden flex items-center">
+            <div className="lg:hidden flex items-center gap-3">
               <Link to={"/cart"}>
                 <span className={toggleMenu ? "relative hidden" : "block"}>
                   <IoCartOutline size={25} className="cursor-pointer" />
@@ -114,6 +122,19 @@ function Header() {
                   </button>
                 </span>
               </Link>
+              {state?.currentUser.photoURL && (
+                <span className={toggleMenu ? "relative hidden" : "block"}>
+                  <div className="cursor-pointer w-[25px] h-[25px] rounded-full">
+                    {(
+                      <img
+                        src={state.currentUser.photoURL}
+                        alt=""
+                        className="rounded-full"
+                      />
+                    ) || <CiUser size={25} />}
+                  </div>
+                </span>
+              )}
               <button
                 onClick={() => setToggleMenu(!toggleMenu)}
                 className={toggleMenu ? "hidden" : "flex items-center"}
@@ -142,44 +163,43 @@ function Header() {
                 <ul className="flex flex-col mt-4 font-medium lg:flex-row lg:space-x-8 lg:mt-0">
                   <li className="hover:bg-slate-200">
                     <Link>
-                      <a
-                        href="#"
+                      <span
                         className="block py-2 pr-4 pl-3 text-gray-700 hover:text-gray-900"
                         aria-current="page"
+                        onClick={() => setToggleMenu(!toggleMenu)}
                       >
                         Home
-                      </a>
+                      </span>
                     </Link>
                   </li>
                   <li className="hover:bg-slate-200">
                     <Link to={"/"}>
-                      <a
-                        href="#"
+                      <span
                         className="block py-2 pr-4 pl-3 text-gray-700 "
+                        onClick={() => setToggleMenu(!toggleMenu)}
                       >
                         Contact
-                      </a>
+                      </span>
                     </Link>
                   </li>
                   <li className="hover:bg-slate-200">
                     <Link to={"/about"}>
-                      <a
-                        href="#"
+                      <span
                         className="block py-2 pr-4 pl-3 text-gray-700 "
+                        onClick={() => setToggleMenu(!toggleMenu)}
                       >
                         About
-                      </a>
+                      </span>
                     </Link>
                   </li>
                   <li className="hover:bg-slate-200">
-                    <Link to={"/auth/register"}>
-                      <a
-                        href="#"
-                        className="block py-2 pr-4 pl-3 text-gray-700 "
-                      >
-                        Sign Up
-                      </a>
-                    </Link>
+                    {!state?.currentUser?.name && (
+                      <Link to={"/auth/register"}>
+                        <span className="block py-2 pl-3 text-gray-70 hover:underline">
+                          Sign Up
+                        </span>
+                      </Link>
+                    )}
                   </li>
                 </ul>
               </div>
