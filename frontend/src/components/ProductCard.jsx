@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { CiHeart } from "react-icons/ci";
 import { IoEyeOutline } from "react-icons/io5";
 import "../index.css";
@@ -16,23 +16,26 @@ function ProductCard({
 }) {
   const { state, dispatch } = useContext(GlobalContext);
 
-  const handleCartItemCount = () => {
-    dispatch({ type: "CART_ITEM_COUNT", payload: { num: 1 } });
-  };
-  const handleAddToCart = (item) => {
-    const duplicate = state.cart.find((p) => p.id === item.id);
+  const [btnDisable, setBtnDisable] = useState(false);
+  const [btnText, setBtnText] = useState("");
 
+  const handleAddToCart = (item) => {
+    setBtnDisable(true);
+
+    const duplicate = state.cart.find((p) => p.id === item.id);
     if (!duplicate) {
       dispatch({ type: "ADD_TO_CART", payload: item });
       dispatch({ type: "UPDATE_TOTAL" });
     } else {
+      setBtnText("Already in Cart");
       dispatch({
         type: "UPDATE_QUANTITY",
-        payload: { id: item.id, quantity: 1 },
+        payload: { id: item.id, quantity: duplicate.quantity },
       });
       dispatch({ type: "UPDATE_TOTAL" });
     }
   };
+
   return (
     <div className="w-[100%] sm:w-[40%] md:w-[30%] lg:w-[23%] productCard shadow h-[330px] mt-3 rounded relative ">
       {discount && (
@@ -54,13 +57,15 @@ function ProductCard({
       <div className="bg-gray-100 h-[75%] flex flex-col items-center justify-evenly ">
         <img src={`/img/${src}`} alt="" className="object-contain" />
         <button
-          className="bg-transparent text-gray-100 hover:text-white w-full py-2 addToCart-btn absolute bottom-20"
-          onClick={() => (
-            handleCartItemCount(),
+          className={
+            "bg-transparent text-gray-100 hover:text-white w-full py-2 addToCart-btn absolute bottom-20"
+          }
+          onClick={() =>
             handleAddToCart({ id, src, name, desc, price, quantity: 1 })
-          )}
+          }
+          disabled={btnText ? btnText : btnDisable ? true : false}
         >
-          Add to Cart
+          {btnDisable ? "Item added..!!!" : "Add to Cart"}
         </button>
       </div>
       <div className="prod-details p-2 flex flex-col items-start justify-center">

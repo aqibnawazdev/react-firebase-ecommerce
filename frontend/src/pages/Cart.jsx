@@ -51,7 +51,9 @@ function Cart() {
                   X
                 </button>
                 <img src={`/img/${p.src}`} alt="" width={50} />
-                <span className="text-xs sm:text-sm">{p.title}</span>
+                <span className="text-xs sm:text-sm hidden md:flex">
+                  {p.name}
+                </span>
               </td>
               <td scope="col" className=" py-2">
                 ${p.price}
@@ -83,14 +85,14 @@ function Cart() {
           Update Cart
         </button>
       </div>
-      <div className="flex w-[90%] justify-between items-start mt-10 mb-10">
-        <div className="w-[60%] flex gap-3">
+      <div className="flex flex-col md:flex-row w-[90%] justify-between items-start gap-5 mt-10 mb-10">
+        <div className="md:w-[60%] flex flex-col sm:flex-row gap-1 sm:gap-3">
           <input type="text" className="py-1 px-3 border border-black" />
-          <button className="bg-red-500 py-1 px-3 text-white">
+          <button className="bg-red-500 w-[70%] md:w-auto py-1 px-3 text-white">
             Apply coupon
           </button>
         </div>
-        <div className="shipping-details flex flex-col gap-3 w-[30%] border border-black p-5">
+        <div className="shipping-details flex flex-col gap-3 w-[60%] md:w-[30%] border border-black p-5">
           <h2>Cart Total</h2>
           <div className="border-b border-b-black flex justify-between">
             <span className="text-sm">Subtotal: </span>
