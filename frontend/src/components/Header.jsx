@@ -4,10 +4,21 @@ import { CiHeart, CiSearch } from "react-icons/ci";
 import { CiUser } from "react-icons/ci";
 import { CgMenuRight } from "react-icons/cg";
 import { RiCloseLine } from "react-icons/ri";
-import { Link } from "react-router-dom";
+import { FaRegUser } from "react-icons/fa";
+import { FiShoppingBag } from "react-icons/fi";
+import { CiCircleRemove } from "react-icons/ci";
+import { FaRegStar } from "react-icons/fa";
+import { CiLogout } from "react-icons/ci";
+
+import { Link, useNavigate } from "react-router-dom";
+
 import { GlobalContext } from "../globalContext/GlobalContext";
+import { signOut } from "firebase/auth";
+import { auth } from "../config/firebase.config";
+import { showToastMessage } from "../utils/showToast";
 function Header() {
   const [toggleMenu, setToggleMenu] = useState(false);
+  const [userProfileToggle, setUserProfileToggle] = useState(false);
   const { state } = useContext(GlobalContext);
 
   const cartItemTotal = () => {
@@ -15,6 +26,15 @@ function Header() {
       (total, currentItem) => currentItem.quantity + total,
       0
     );
+  };
+  const navigate = useNavigate();
+  const handleLogout = () => {
+    signOut(auth)
+      .then(() => {
+        showToastMessage({ type: "success", message: "Logout successfull..." });
+        navigate("/auth/login");
+      })
+      .catch((err) => {});
   };
   return (
     <div className="app border-b sticky z-20 bg-white top-0 left-0">
@@ -95,8 +115,12 @@ function Header() {
                       </button>
                     </span>
                   </Link>
+                  {/* User dropdown menu */}
                   {state?.currentUser.photoURL && (
-                    <span className="relative">
+                    <span
+                      className="relative"
+                      onClick={() => setUserProfileToggle(!userProfileToggle)}
+                    >
                       <div className="cursor-pointer w-[25px] h-[25px] rounded-full">
                         {(
                           <img
@@ -106,6 +130,44 @@ function Header() {
                           />
                         ) || <CiUser size={25} />}
                       </div>
+                      {userProfileToggle && (
+                        <div class="absolute w-[560px] left-1/2 z-10 mt-5 flex max-w-max -translate-x-1/2 px-4">
+                          <div class="w-[200px] max-w-md flex-auto overflow-hidden rounded bg-[#0009] text-sm leading-6 shadow-lg ring-1 ring-gray-900/5">
+                            <div class="p-2">
+                              <div class="group relative gap-1 items-center flex  rounded cursor-pointer text-white py-2 hover:bg-[#0002]">
+                                <FaRegUser size={15} />
+                                <span class="text-sm font-thin">
+                                  Manage My account
+                                </span>
+                              </div>
+                              <div class="group relative gap-1 items-center flex rounded cursor-pointer text-white py-2 hover:bg-[#0002]">
+                                <FiShoppingBag size={15} />
+                                <span class="text-sm font-thin">My Orders</span>
+                              </div>
+                              <div class="group relative gap-1 items-center flex  rounded cursor-pointer text-white py-2 hover:bg-[#0002]">
+                                <CiCircleRemove size={15} />
+                                <span class="text-sm font-thin">
+                                  My Cancellation
+                                </span>
+                              </div>
+                              <div class="group relative gap-1 items-center flex  rounded cursor-pointer text-white py-2 hover:bg-[#0002]">
+                                <FaRegStar size={15} />
+                                <span class="text-sm font-thin">Reviews</span>
+                              </div>
+                              <div class="group relative gap-1 items-center flex rounded cursor-pointer text-white py-2 hover:bg-[#0002]">
+                                <CiLogout size={15} />
+                                <span
+                                  class="text-sm font-thin"
+                                  onClick={() => handleLogout()}
+                                >
+                                  Logout
+                                  <span class="absolute inset-0"></span>
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      )}
                     </span>
                   )}
                 </div>
