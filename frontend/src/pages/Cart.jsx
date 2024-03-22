@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { startTransition, useContext, useState } from "react";
 import { product } from "../data";
 import { GlobalContext } from "../globalContext/GlobalContext";
 
@@ -6,8 +6,20 @@ function Cart() {
   const { state, dispatch } = useContext(GlobalContext);
   const handlCartItemDelete = (id, quantity) => {
     dispatch({ type: "REMOVE_CART_ITEM", payload: { id } });
-    dispatch({ type: "UPDATE_TOTAL" });
-    dispatch({ type: "CART_ITEM_COUNT", payload: { num: -quantity } });
+  };
+
+  const handleQuantityChange = (id, quantity) => {
+    if (quantity < 1) {
+      quantity = 1;
+    }
+    dispatch({ type: "UPDATE_QUANTITY", payload: { id, quantity } });
+  };
+
+  const calcTotalPrice = () => {
+    return state.cart.reduce(
+      (total, currentItem) => currentItem.price * currentItem.quantity + total,
+      0
+    );
   };
   return (
     <div className="w-full flex flex-col justify-center items-center mt-10">
@@ -49,7 +61,10 @@ function Cart() {
                   <input
                     className="w-[45px] py-1 ps-2 border"
                     type="number"
-                    defaultValue={p.quantity}
+                    value={p.quantity}
+                    onChange={(e) =>
+                      handleQuantityChange(p.id, parseInt(e.target.value))
+                    }
                   />
                 </div>
               </td>
@@ -79,7 +94,7 @@ function Cart() {
           <h2>Cart Total</h2>
           <div className="border-b border-b-black flex justify-between">
             <span className="text-sm">Subtotal: </span>
-            <span className="text-sm">${state.totalPrice}</span>
+            <span className="text-sm">${calcTotalPrice()}</span>
           </div>
           <div className="border-b  border-b-black flex justify-between">
             <span className="text-sm">Shipping: </span>
@@ -87,7 +102,7 @@ function Cart() {
           </div>
           <div className=" flex justify-between mt-2">
             <span className="text-sm font-semibold">Total: </span>
-            <span className="text-sm font-semibold">${state.totalPrice}</span>
+            <span className="text-sm font-semibold">${calcTotalPrice()}</span>
           </div>
           <div className="self-center">
             <button className="bg-red-500 py-1 px-2 rounded text-white text-sm">

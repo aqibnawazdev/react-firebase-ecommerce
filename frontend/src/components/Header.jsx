@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { startTransition, useContext, useState } from "react";
 import { IoCartOutline } from "react-icons/io5";
 import { CiHeart, CiSearch } from "react-icons/ci";
 import { CgMenuRight } from "react-icons/cg";
@@ -8,6 +8,12 @@ import { GlobalContext } from "../globalContext/GlobalContext";
 function Header() {
   const [toggleMenu, setToggleMenu] = useState(false);
   const { state } = useContext(GlobalContext);
+  const cartItemTotal = () => {
+    return state.cart.reduce(
+      (total, currentItem) => currentItem.quantity + total,
+      0
+    );
+  };
   return (
     <div className="app border-b sticky z-20 bg-white top-0 left-0">
       <nav>
@@ -90,7 +96,7 @@ function Header() {
                     <span className="relative">
                       <IoCartOutline size={25} className="cursor-pointer" />
                       <button className="bg-red-500 w-4 h-4 rounded-full text-[10px] text-white absolute top-[-8px]">
-                        {state.cartItemCount}
+                        {cartItemTotal()}
                       </button>
                     </span>
                   </Link>
@@ -100,6 +106,14 @@ function Header() {
 
             {/* Mobile navigation toggle */}
             <div className="lg:hidden flex items-center">
+              <Link to={"/cart"}>
+                <span className={toggleMenu ? "relative hidden" : "block"}>
+                  <IoCartOutline size={25} className="cursor-pointer" />
+                  <button className="bg-red-500 w-4 h-4 rounded-full text-[10px] text-white absolute  top-2 ">
+                    {cartItemTotal()}
+                  </button>
+                </span>
+              </Link>
               <button
                 onClick={() => setToggleMenu(!toggleMenu)}
                 className={toggleMenu ? "hidden" : "flex items-center"}
