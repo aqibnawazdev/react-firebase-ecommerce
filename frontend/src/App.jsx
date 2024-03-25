@@ -8,6 +8,7 @@ import Home from "./pages/Home";
 import { Routes, Route, Navigate } from "react-router-dom";
 import ProductDetails from "./pages/ProductDetails";
 import Cart from "./pages/Cart";
+import Dashboard from "./dashboard/Dashboard";
 export default function App() {
   return (
     <div>
@@ -19,6 +20,7 @@ export default function App() {
         <Route path="/auth/register" element={<AuthRegister />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/product/:id" element={<ProductDetails replace />} />
+        <Route path="/admin/dashboard/*" element={<Dashboard />} />
       </Routes>
     </div>
   );
