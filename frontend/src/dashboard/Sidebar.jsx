@@ -5,7 +5,7 @@ function Sidebar() {
   return (
     <div className="w-[200px] h-[490px] shadow border-r">
       <div className="flex flex-col pt-2 gap-2 ">
-        <Link to={"/admin/dashboard/home"}>
+        <Link to={"/admin/dashboard"}>
           <span className="hover:bg-black flex justify-start ps-2 py-2 w-full hover:text-white">
             Dashboard
           </span>

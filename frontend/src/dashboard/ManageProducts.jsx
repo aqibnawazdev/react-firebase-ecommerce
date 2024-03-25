@@ -11,9 +11,18 @@ function ManageProducts() {
   return (
     <div className="w-full ">
       <div className="mt-10 flex flex-col ">
-        <h2 className="font-bold text-2xl mb-8 border-b-2 border-b-red-500 self-start">
-          All Products
-        </h2>
+        <div className="flex justify-between items-center w-[90%] mb-2 ">
+          <h2 className="font-bold text-2xl border-b-2 border-b-red-500 ">
+            All Products
+          </h2>
+          <button
+            className="bg-red-500 hover:bg-red-900 text-sm text-white p-2 rounded "
+            onClick={() => setShowModal(true)}
+          >
+            Add New Product
+          </button>
+        </div>
+
         <table className="table-auto w-[90%] overflow-x-auto text-left">
           <thead className="shadow-sm ">
             <tr className=" bg-gray-100 m-5">
@@ -67,12 +76,6 @@ function ManageProducts() {
             ))}
           </tbody>
         </table>
-        <button
-          className="bg-red-500 hover:bg-red-900 text-sm text-white p-2 mt-10 rounded self-start"
-          onClick={() => setShowModal(true)}
-        >
-          Add New Product
-        </button>
       </div>
       {showModal ? (
         <Modal>
