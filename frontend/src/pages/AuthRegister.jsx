@@ -25,7 +25,6 @@ function AuthRegister() {
     const phoneNumber = data.get("phonenumber");
     const name = data.get("name").replaceAll(" ", "").toLowerCase();
     const file = data.get("profile-pic");
-
     try {
       const res = await createUserWithEmailAndPassword(auth, email, password);
       showToastMessage({

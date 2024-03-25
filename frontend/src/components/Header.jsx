@@ -1,4 +1,4 @@
-import React, { startTransition, useContext, useState } from "react";
+import React, { startTransition, useContext, useEffect, useState } from "react";
 import { IoCartOutline } from "react-icons/io5";
 import { CiHeart, CiSearch } from "react-icons/ci";
 import { CiUser } from "react-icons/ci";
@@ -13,13 +13,25 @@ import { CiLogout } from "react-icons/ci";
 import { Link, useNavigate } from "react-router-dom";
 
 import { GlobalContext } from "../globalContext/GlobalContext";
-import { signOut } from "firebase/auth";
+import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth } from "../config/firebase.config";
 import { showToastMessage } from "../utils/showToast";
 function Header() {
   const [toggleMenu, setToggleMenu] = useState(false);
   const [userProfileToggle, setUserProfileToggle] = useState(false);
+  const [user, setUser] = useState();
   const { state } = useContext(GlobalContext);
+  const [admin, setAdmin] = useState(null);
+  const getClaim = () => {
+    auth.currentUser
+      .getIdTokenResult()
+      .then((idTokenResult) => {
+        setAdmin(idTokenResult.claims.admin);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   const cartItemTotal = () => {
     return state.cart.reduce(
@@ -27,11 +39,22 @@ function Header() {
       0
     );
   };
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        getClaim();
+        setUser(user);
+      } else {
+        setUser(false);
+      }
+    });
+  }, []);
   const navigate = useNavigate();
   const handleLogout = () => {
     signOut(auth)
       .then(() => {
         showToastMessage({ type: "success", message: "Logout successfull..." });
+        localStorage.removeItem("user");
         navigate("/auth/login");
       })
       .catch((err) => {});
@@ -54,7 +77,6 @@ function Header() {
                   <li>
                     <Link to={"/"}>
                       <span
-                        href="#"
                         className="block py-2 pl-3  rounded bg-primary-70 hover:underline"
                         aria-current="page"
                       >
@@ -77,7 +99,7 @@ function Header() {
                     </Link>
                   </li>
                   <li>
-                    {!state?.currentUser?.name && (
+                    {!user && (
                       <Link to={"/auth/register"}>
                         <span className="block py-2 pl-3 text-gray-70 hover:underline">
                           Sign Up
@@ -116,7 +138,7 @@ function Header() {
                     </span>
                   </Link>
                   {/* User dropdown menu */}
-                  {state?.currentUser.photoURL && (
+                  {user && (
                     <span
                       className="relative"
                       onClick={() => setUserProfileToggle(!userProfileToggle)}
@@ -124,47 +146,74 @@ function Header() {
                       <div className="cursor-pointer w-[25px] h-[25px] rounded-full">
                         {(
                           <img
-                            src={state.currentUser.photoURL}
+                            src={user.photoURL}
                             alt=""
                             className="rounded-full"
                           />
                         ) || <CiUser size={25} />}
                       </div>
                       {userProfileToggle && (
-                        <div class="absolute w-[560px] left-1/2 z-10 mt-5 flex max-w-max -translate-x-1/2 px-4">
-                          <div class="w-[200px] max-w-md flex-auto overflow-hidden rounded bg-[#0009] text-sm leading-6 shadow-lg ring-1 ring-gray-900/5">
-                            <div class="p-2">
-                              <div class="group relative gap-1 items-center flex  rounded cursor-pointer text-white py-2 hover:bg-[#0002]">
-                                <FaRegUser size={15} />
-                                <span class="text-sm font-thin">
-                                  Manage My account
-                                </span>
+                        <div className="absolute w-[560px] left-1/2 z-10 mt-5 flex max-w-max -translate-x-1/2 px-4">
+                          <div className="w-[200px] max-w-md flex-auto overflow-hidden rounded bg-[#0009] text-sm leading-6 shadow-lg ring-1 ring-gray-900/5">
+                            {!admin ? (
+                              <div className="p-2">
+                                <div className="group relative gap-1 items-center flex  rounded cursor-pointer text-white py-2 hover:bg-[#0002]">
+                                  <FaRegUser size={15} />
+                                  <span className="text-sm font-thin">
+                                    Manage My account
+                                  </span>
+                                </div>
+                                <div className="group relative gap-1 items-center flex rounded cursor-pointer text-white py-2 hover:bg-[#0002]">
+                                  <FiShoppingBag size={15} />
+                                  <span className="text-sm font-thin">
+                                    My Orders
+                                  </span>
+                                </div>
+                                <div className="group relative gap-1 items-center flex  rounded cursor-pointer text-white py-2 hover:bg-[#0002]">
+                                  <CiCircleRemove size={15} />
+                                  <span className="text-sm font-thin">
+                                    My Cancellation
+                                  </span>
+                                </div>
+                                <div className="group relative gap-1 items-center flex  rounded cursor-pointer text-white py-2 hover:bg-[#0002]">
+                                  <FaRegStar size={15} />
+                                  <span className="text-sm font-thin">
+                                    Reviews
+                                  </span>
+                                </div>
+                                <div className="group relative gap-1 items-center flex rounded cursor-pointer text-white py-2 hover:bg-[#0002]">
+                                  <CiLogout size={15} />
+                                  <span
+                                    className="text-sm font-thin"
+                                    onClick={() => handleLogout()}
+                                  >
+                                    Logout
+                                    <span className="absolute inset-0"></span>
+                                  </span>
+                                </div>
                               </div>
-                              <div class="group relative gap-1 items-center flex rounded cursor-pointer text-white py-2 hover:bg-[#0002]">
-                                <FiShoppingBag size={15} />
-                                <span class="text-sm font-thin">My Orders</span>
+                            ) : (
+                              <div className="p-2">
+                                <div className="group relative gap-1 items-center flex  rounded cursor-pointer text-white py-2 hover:bg-[#0002]">
+                                  <FaRegUser size={15} />
+                                  <Link to={"/admin/dashboard"}>
+                                    <span className="text-sm text-white font-thin">
+                                      Admin Dashboard
+                                    </span>
+                                  </Link>
+                                </div>
+                                <div className="group relative gap-1 items-center flex rounded cursor-pointer text-white py-2 hover:bg-[#0002]">
+                                  <CiLogout size={15} />
+                                  <span
+                                    className="text-sm font-thin"
+                                    onClick={() => handleLogout()}
+                                  >
+                                    Logout
+                                    <span className="absolute inset-0"></span>
+                                  </span>
+                                </div>
                               </div>
-                              <div class="group relative gap-1 items-center flex  rounded cursor-pointer text-white py-2 hover:bg-[#0002]">
-                                <CiCircleRemove size={15} />
-                                <span class="text-sm font-thin">
-                                  My Cancellation
-                                </span>
-                              </div>
-                              <div class="group relative gap-1 items-center flex  rounded cursor-pointer text-white py-2 hover:bg-[#0002]">
-                                <FaRegStar size={15} />
-                                <span class="text-sm font-thin">Reviews</span>
-                              </div>
-                              <div class="group relative gap-1 items-center flex rounded cursor-pointer text-white py-2 hover:bg-[#0002]">
-                                <CiLogout size={15} />
-                                <span
-                                  class="text-sm font-thin"
-                                  onClick={() => handleLogout()}
-                                >
-                                  Logout
-                                  <span class="absolute inset-0"></span>
-                                </span>
-                              </div>
-                            </div>
+                            )}
                           </div>
                         </div>
                       )}
@@ -184,7 +233,7 @@ function Header() {
                   </button>
                 </span>
               </Link>
-              {state?.currentUser.photoURL && (
+              {user && (
                 <span className={toggleMenu ? "relative hidden" : "block"}>
                   <div className="cursor-pointer w-[25px] h-[25px] rounded-full">
                     {(

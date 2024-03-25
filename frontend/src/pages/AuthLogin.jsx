@@ -22,6 +22,7 @@ function AuthLogin() {
             type: "success",
             message: "Logged in Successfully...",
           });
+          localStorage.setItem("user", JSON.stringify(user));
           setTimeout(() => {
             navigate("/");
           }, 2000);

@@ -49,21 +49,11 @@ const GlobalReducer = (state, action) => {
 const GolbalContextProvider = ({ children }) => {
   const [state, dispatch] = useReducer(GlobalReducer, initialState);
   useEffect(() => {
-    const unsub = onAuthStateChanged(auth, (user) => {
-      const userdata = {
-        name: user.displayName,
-        phoneNumber: user.phoneNumber,
-        email: user.email,
-        photoURL: user.photoURL,
-        userId: user.uid,
-      };
-      if (user) {
-        dispatch({ type: "AUTH_STATE_CHANGE", payload: userdata });
-      } else {
-      }
-    });
-    return () => unsub();
-  }, []);
+    const userdata = JSON.parse(localStorage.getItem("user"));
+    if (userdata) {
+      dispatch({ type: "AUTH_STATE_CHANGE", payload: userdata });
+    }
+  }, [state.currentUser.uid]);
 
   return (
     <GlobalContext.Provider value={{ state, dispatch }}>
