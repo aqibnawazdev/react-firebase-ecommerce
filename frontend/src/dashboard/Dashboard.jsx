@@ -3,6 +3,7 @@ import Sidebar from "./Sidebar";
 import Home from "./Home";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import ManageProducts from "./ManageProducts";
+import AddProduct from "./AddProduct";
 
 function Dashboard() {
   return (
@@ -11,6 +12,7 @@ function Dashboard() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/manageproducts" element={<ManageProducts />} />
+        <Route path="/addproduct" element={<AddProduct />} />
       </Routes>
     </div>
   );

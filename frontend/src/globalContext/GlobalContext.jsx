@@ -1,18 +1,18 @@
 import React, { useEffect } from "react";
 import { useContext, useReducer, createContext } from "react";
-import { product } from "../data";
 import { onAuthStateChanged } from "firebase/auth";
-import { auth } from "../config/firebase.config";
+import { auth, db } from "../config/firebase.config";
+import { collection, query, onSnapshot } from "firebase/firestore";
 
 const initialState = {
   cart: [],
   cartItemCount: 0,
   currentUser: {},
+  proudcts: [],
 };
 
 export const GlobalContext = createContext("");
 const GlobalReducer = (state, action) => {
-  console.log(action.payload);
   switch (action.type) {
     case "ADD_TO_CART":
       return {
@@ -41,18 +41,40 @@ const GlobalReducer = (state, action) => {
         ...state,
         currentUser: action.payload,
       };
+    case "PRODUCT_FETCH":
+      return {
+        ...state,
+        products: action.payload,
+      };
 
     default:
       return state;
   }
 };
+
 const GolbalContextProvider = ({ children }) => {
   const [state, dispatch] = useReducer(GlobalReducer, initialState);
+
+  const productRef = collection(db, "products");
   useEffect(() => {
+    const unsubscribe = onSnapshot(productRef, (querySnapshot) => {
+      const products = [];
+      querySnapshot.forEach((doc) => {
+        const product = {
+          pId: doc.id,
+          ...doc.data(),
+        };
+        products.push(product);
+      });
+      dispatch({ type: "PRODUCT_FETCH", payload: products });
+    });
     const userdata = JSON.parse(localStorage.getItem("user"));
     if (userdata) {
       dispatch({ type: "AUTH_STATE_CHANGE", payload: userdata });
     }
+    () => {
+      return unsubscribe;
+    };
   }, [state.currentUser.uid]);
 
   return (
