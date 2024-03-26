@@ -36,7 +36,7 @@ function AuthRegister() {
         const metadata = {
           contentType: file.type,
         };
-        const storageRef = ref(storage, "images/" + name);
+        const storageRef = ref(storage, "users/" + name);
         await uploadBytesResumable(storageRef, file, metadata).then(() => {
           getDownloadURL(storageRef).then(async (downloadURL) => {
             await updateProfile(userData, {
