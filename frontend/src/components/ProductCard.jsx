@@ -55,7 +55,7 @@ function ProductCard({
         </Link>
       </div>
       <div className="bg-gray-100 h-[75%] flex flex-col items-center justify-evenly ">
-        <img src={`/img/${src}`} alt="" className="object-contain" />
+        <img src={src} alt="" className="object-contain" />
         <button
           className={
             "bg-transparent text-gray-100 hover:text-white w-full py-2 addToCart-btn absolute bottom-20"

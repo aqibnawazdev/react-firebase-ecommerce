@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useContext } from "react";
 import ProductCard from "../components/ProductCard";
 import SectionTitle from "../components/SectionCatTitle";
 import { product } from "../data";
+import { GlobalContext } from "../globalContext/GlobalContext";
 
 function TodayFlashSaleSection() {
+  const { state } = useContext(GlobalContext);
   return (
     <section className="w-full flex flex-col justify-center items-center">
       <div className="w-[90%] border-t mt-10">
@@ -13,16 +15,16 @@ function TodayFlashSaleSection() {
           timer={{ days: "23", hours: "12", minutes: "30", seconds: "33" }}
         />
         <div className="py-5 flex md:justify-between justify-center gap-3 flex-wrap">
-          {product.map((m, i) => (
+          {state.products?.map((m, i) => (
             <ProductCard
               key={i}
-              src={m.img}
+              src={m.images[0]}
               name={m.title}
               price={m.price}
-              orignalPrice={m.originalPrice}
-              discount={40}
-              id={m.id}
-              desc={m.desc}
+              orignalPrice={m.price + 30}
+              discount={m.discountPercentage}
+              id={m.pId}
+              desc={m.description}
             />
           ))}
         </div>

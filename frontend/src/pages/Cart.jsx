@@ -50,7 +50,7 @@ function Cart() {
                 >
                   X
                 </button>
-                <img src={`/img/${p.src}`} alt="" width={50} />
+                <img src={p.src} alt="" width={50} />
                 <span className="text-xs sm:text-sm hidden md:flex">
                   {p.name}
                 </span>
