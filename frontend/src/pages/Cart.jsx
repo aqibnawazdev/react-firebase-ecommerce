@@ -1,6 +1,7 @@
 import React, { startTransition, useContext, useState } from "react";
 import { product } from "../data";
 import { GlobalContext } from "../globalContext/GlobalContext";
+import { Link } from "react-router-dom";
 
 function Cart() {
   const { state, dispatch } = useContext(GlobalContext);
@@ -107,9 +108,11 @@ function Cart() {
             <span className="text-sm font-semibold">${calcTotalPrice()}</span>
           </div>
           <div className="self-center">
-            <button className="bg-red-500 py-1 px-2 rounded text-white text-sm">
-              Proccess to checkout
-            </button>
+            <Link to={"/cart/checkout"}>
+              <button className="bg-red-500 py-1 px-2 rounded text-white text-sm">
+                Proccess to checkout
+              </button>
+            </Link>
           </div>
         </div>
       </div>
