@@ -39,6 +39,7 @@ function ManageProducts() {
       ...modelData,
     }).then(() => {
       showToastMessage({ type: "success", message: "Item updated..." });
+      setShowModal(false);
     });
   };
   return (

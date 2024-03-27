@@ -1,11 +1,12 @@
 import React, { useRef, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { db, storage } from "../config/firebase.config";
 import { collection, doc, serverTimestamp, setDoc } from "firebase/firestore";
 import { showToastMessage } from "../utils/showToast";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 
 function AddProduct() {
+  const navigate = useNavigate();
   const prodcutRef = doc(collection(db, "products"));
 
   const uploadImage = async (title, category, image) => {
@@ -37,7 +38,7 @@ function AddProduct() {
       title,
       category,
       price,
-      stoke: quantity,
+      stock: quantity,
       discountPercentage: discount,
       coupon,
       description,
@@ -50,7 +51,7 @@ function AddProduct() {
         message: "Product added successfully..",
       });
       setTimeout(() => {
-        window.location.reload();
+        navigate(-1);
       }, 1000);
     });
   };

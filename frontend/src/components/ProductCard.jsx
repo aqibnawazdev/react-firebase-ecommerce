@@ -4,6 +4,7 @@ import { IoEyeOutline } from "react-icons/io5";
 import "../index.css";
 import { Link } from "react-router-dom";
 import { GlobalContext } from "../globalContext/GlobalContext";
+import { showToastMessage } from "../utils/showToast";
 function ProductCard({
   src,
   id,
@@ -20,6 +21,13 @@ function ProductCard({
   const [btnText, setBtnText] = useState("");
 
   const handleAddToCart = (item) => {
+    if (state.adminClaim) {
+      showToastMessage({
+        type: "warn",
+        message: "Admins are not allowed to add",
+      });
+      return;
+    }
     setBtnDisable(true);
 
     const duplicate = state.cart.find((p) => p.id === item.id);

@@ -16,7 +16,17 @@ export const showToastMessage = (toastDetails) => {
     else if (toastDetails.type === "loading") {
         toast.loading(toastDetails.message, {
             position: "top-center",
-            autoClose: 100,
+            autoClose: 200,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            progress: undefined,
+        })
+    }
+    else if (toastDetails.type === "warn") {
+        toast.warn(toastDetails.message, {
+            position: "top-center",
+            autoClose: 1000,
             hideProgressBar: false,
             closeOnClick: true,
             pauseOnHover: true,

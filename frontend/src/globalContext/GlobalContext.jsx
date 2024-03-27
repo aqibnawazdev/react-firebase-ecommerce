@@ -6,6 +6,7 @@ import { collection, query, onSnapshot } from "firebase/firestore";
 
 const initialState = {
   cart: [],
+  adminClaim: null,
   cartItemCount: 0,
   currentUser: {},
   proudcts: [],
@@ -40,6 +41,11 @@ const GlobalReducer = (state, action) => {
       return {
         ...state,
         currentUser: action.payload,
+      };
+    case "ADMIN_CLAIM":
+      return {
+        ...state,
+        adminClaim: action.payload,
       };
     case "PRODUCT_FETCH":
       return {

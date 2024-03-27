@@ -1,6 +1,6 @@
 import { signInWithEmailAndPassword } from "firebase/auth";
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { auth } from "../config/firebase.config";
 import { showToastMessage } from "../utils/showToast";
 function AuthLogin() {
@@ -79,6 +79,12 @@ function AuthLogin() {
               </button>
             </div>
           </form>
+          <p className="mt-6">
+            Don't have an account?{" "}
+            <Link to={"/auth/register"}>
+              <span className="underline ">Sign Up</span>
+            </Link>
+          </p>
         </div>
       </div>
     </div>

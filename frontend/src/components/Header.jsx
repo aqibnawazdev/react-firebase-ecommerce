@@ -4,11 +4,6 @@ import { CiHeart, CiSearch } from "react-icons/ci";
 import { CiUser } from "react-icons/ci";
 import { CgMenuRight } from "react-icons/cg";
 import { RiCloseLine } from "react-icons/ri";
-import { FaRegUser } from "react-icons/fa";
-import { FiShoppingBag } from "react-icons/fi";
-import { CiCircleRemove } from "react-icons/ci";
-import { FaRegStar } from "react-icons/fa";
-import { CiLogout } from "react-icons/ci";
 
 import { Link, useNavigate } from "react-router-dom";
 
@@ -16,17 +11,20 @@ import { GlobalContext } from "../globalContext/GlobalContext";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth } from "../config/firebase.config";
 import { showToastMessage } from "../utils/showToast";
+import UserFloatMenuMobile from "./navMenus/UserFloatMenuMobile";
+import UserFloatMenuDesktop from "./navMenus/UserFloatMenuDesktop";
 function Header() {
   const [toggleMenu, setToggleMenu] = useState(false);
   const [userProfileToggle, setUserProfileToggle] = useState(false);
   const [user, setUser] = useState();
-  const { state } = useContext(GlobalContext);
+  const { state, dispatch } = useContext(GlobalContext);
   const [admin, setAdmin] = useState(null);
   const getClaim = () => {
     auth.currentUser
       .getIdTokenResult()
       .then((idTokenResult) => {
         setAdmin(idTokenResult.claims.admin);
+        dispatch({ type: "ADMIN_CLAIM", payload: idTokenResult.claims.admin });
       })
       .catch((error) => {
         console.log(error);
@@ -48,7 +46,7 @@ function Header() {
         setUser(false);
       }
     });
-  }, []);
+  }, [auth.currentUser]);
   const navigate = useNavigate();
   const handleLogout = () => {
     signOut(auth)
@@ -121,29 +119,38 @@ function Header() {
                     />
                     <CiSearch size={20} className="me-1 font-bold" />
                   </div>
-                  <Link to={"/wishlist"}>
-                    <span className="relative">
-                      <CiHeart size={25} className="mx-2 cursor-pointer" />
-                      <button className="bg-red-500 w-4 h-4 rounded-full text-[10px] text-white absolute top-[-8px]">
-                        {2}
-                      </button>
-                    </span>
-                  </Link>
-                  <Link to={"/cart"}>
-                    <span className="relative">
-                      <IoCartOutline size={25} className="cursor-pointer" />
-                      <button className="bg-red-500 w-4 h-4 rounded-full text-[10px] text-white absolute top-[-8px]">
-                        {cartItemTotal()}
-                      </button>
-                    </span>
-                  </Link>
+
+                  {!admin && (
+                    <>
+                      <Link to={"/wishlist"}>
+                        <span className="relative">
+                          <CiHeart size={25} className="mx-2 cursor-pointer" />
+                          <button className="bg-red-500 w-4 h-4 rounded-full text-[10px] text-white absolute top-[-9px]">
+                            {2}
+                          </button>
+                        </span>
+                      </Link>
+                      <Link to={"/cart"}>
+                        <span
+                          className={toggleMenu ? "relative hidden" : "block"}
+                        >
+                          <IoCartOutline size={25} className="cursor-pointer" />
+                          <button className="bg-red-500 w-4 h-4 rounded-full text-[10px] text-white absolute  top-4 ">
+                            {cartItemTotal()}
+                          </button>
+                        </span>
+                      </Link>
+                    </>
+                  )}
                   {/* User dropdown menu */}
                   {user && (
                     <span
-                      className="relative"
+                      className="relative flex gap-2"
                       onClick={() => setUserProfileToggle(!userProfileToggle)}
                     >
-                      <div className="cursor-pointer w-[25px] h-[25px] rounded-full">
+                      {admin && "Hi, Admin"}
+
+                      <div className="cursor-pointer w-[25px] h-[25px] rounded-full flex">
                         {(
                           <img
                             src={user.photoURL}
@@ -153,69 +160,12 @@ function Header() {
                         ) || <CiUser size={25} />}
                       </div>
                       {userProfileToggle && (
-                        <div className="absolute w-[560px] left-1/2 z-10 mt-5 flex max-w-max -translate-x-1/2 px-4">
-                          <div className="w-[200px] max-w-md flex-auto overflow-hidden rounded bg-[#0009] text-sm leading-6 shadow-lg ring-1 ring-gray-900/5">
-                            {!admin ? (
-                              <div className="p-2">
-                                <div className="group relative gap-1 items-center flex  rounded cursor-pointer text-white py-2 hover:bg-[#0002]">
-                                  <FaRegUser size={15} />
-                                  <span className="text-sm font-thin">
-                                    Manage My account
-                                  </span>
-                                </div>
-                                <div className="group relative gap-1 items-center flex rounded cursor-pointer text-white py-2 hover:bg-[#0002]">
-                                  <FiShoppingBag size={15} />
-                                  <span className="text-sm font-thin">
-                                    My Orders
-                                  </span>
-                                </div>
-                                <div className="group relative gap-1 items-center flex  rounded cursor-pointer text-white py-2 hover:bg-[#0002]">
-                                  <CiCircleRemove size={15} />
-                                  <span className="text-sm font-thin">
-                                    My Cancellation
-                                  </span>
-                                </div>
-                                <div className="group relative gap-1 items-center flex  rounded cursor-pointer text-white py-2 hover:bg-[#0002]">
-                                  <FaRegStar size={15} />
-                                  <span className="text-sm font-thin">
-                                    Reviews
-                                  </span>
-                                </div>
-                                <div className="group relative gap-1 items-center flex rounded cursor-pointer text-white py-2 hover:bg-[#0002]">
-                                  <CiLogout size={15} />
-                                  <span
-                                    className="text-sm font-thin"
-                                    onClick={() => handleLogout()}
-                                  >
-                                    Logout
-                                    <span className="absolute inset-0"></span>
-                                  </span>
-                                </div>
-                              </div>
-                            ) : (
-                              <div className="p-2">
-                                <div className="group relative gap-1 items-center flex  rounded cursor-pointer text-white py-2 hover:bg-[#0002]">
-                                  <FaRegUser size={15} />
-                                  <Link to={"/admin/dashboard"}>
-                                    <span className="text-sm text-white font-thin">
-                                      Admin Dashboard
-                                    </span>
-                                  </Link>
-                                </div>
-                                <div className="group relative gap-1 items-center flex rounded cursor-pointer text-white py-2 hover:bg-[#0002]">
-                                  <CiLogout size={15} />
-                                  <span
-                                    className="text-sm font-thin"
-                                    onClick={() => handleLogout()}
-                                  >
-                                    Logout
-                                    <span className="absolute inset-0"></span>
-                                  </span>
-                                </div>
-                              </div>
-                            )}
-                          </div>
-                        </div>
+                        <UserFloatMenuDesktop
+                          admin={admin}
+                          handleLogout={handleLogout}
+                          setUserProfileToggle={setUserProfileToggle}
+                          userProfileToggle={userProfileToggle}
+                        />
                       )}
                     </span>
                   )}
@@ -225,17 +175,34 @@ function Header() {
 
             {/* Mobile navigation toggle */}
             <div className="lg:hidden flex items-center gap-3">
-              <Link to={"/cart"}>
-                <span className={toggleMenu ? "relative hidden" : "block"}>
-                  <IoCartOutline size={25} className="cursor-pointer" />
-                  <button className="bg-red-500 w-4 h-4 rounded-full text-[10px] text-white absolute  top-2 ">
-                    {cartItemTotal()}
-                  </button>
-                </span>
-              </Link>
+              {!admin && (
+                <>
+                  <Link to={"/wishlist"}>
+                    <span className="relative">
+                      <CiHeart size={25} className="mx-2 cursor-pointer" />
+                      <button className="bg-red-500 w-4 h-4 rounded-full text-[10px] text-white absolute top-[-9px]">
+                        {2}
+                      </button>
+                    </span>
+                  </Link>
+                  <Link to={"/cart"}>
+                    <span className={toggleMenu ? "relative hidden" : "block"}>
+                      <IoCartOutline size={25} className="cursor-pointer" />
+                      <button className="bg-red-500 w-4 h-4 rounded-full text-[10px] text-white absolute  top-4 ">
+                        {cartItemTotal()}
+                      </button>
+                    </span>
+                  </Link>
+                </>
+              )}
+
               {user && (
-                <span className={toggleMenu ? "relative hidden" : "block"}>
-                  <div className="cursor-pointer w-[25px] h-[25px] rounded-full">
+                <span className={toggleMenu ? "relative hidden" : "flex gap-2"}>
+                  {admin && "Hi, Admin"}
+                  <div
+                    className="cursor-pointer w-[25px] h-[25px] rounded-full"
+                    onClick={() => setUserProfileToggle(!userProfileToggle)}
+                  >
                     {(
                       <img
                         src={state.currentUser.photoURL}
@@ -244,6 +211,14 @@ function Header() {
                       />
                     ) || <CiUser size={25} />}
                   </div>
+                  {userProfileToggle && (
+                    <UserFloatMenuMobile
+                      admin={admin}
+                      handleLogout={handleLogout}
+                      userProfileToggle={userProfileToggle}
+                      setUserProfileToggle={setUserProfileToggle}
+                    />
+                  )}
                 </span>
               )}
               <button
@@ -273,7 +248,7 @@ function Header() {
               <div className="gap-8 ">
                 <ul className="flex flex-col mt-4 font-medium lg:flex-row lg:space-x-8 lg:mt-0">
                   <li className="hover:bg-slate-200">
-                    <Link>
+                    <Link to={"/home"}>
                       <span
                         className="block py-2 pr-4 pl-3 text-gray-700 hover:text-gray-900"
                         aria-current="page"
@@ -284,7 +259,7 @@ function Header() {
                     </Link>
                   </li>
                   <li className="hover:bg-slate-200">
-                    <Link to={"/"}>
+                    <Link to={"/contact"}>
                       <span
                         className="block py-2 pr-4 pl-3 text-gray-700 "
                         onClick={() => setToggleMenu(!toggleMenu)}

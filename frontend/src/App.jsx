@@ -9,6 +9,9 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import ProductDetails from "./pages/ProductDetails";
 import Cart from "./pages/Cart";
 import Dashboard from "./dashboard/Dashboard";
+import { ProtectAuth, ProtectDashboard } from "./config/ProtectedRoutes";
+import Checkout from "./pages/Checkout";
+
 export default function App() {
   return (
     <div>
@@ -16,11 +19,33 @@ export default function App() {
       <Header />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/auth/login" element={<AuthLogin />} />
-        <Route path="/auth/register" element={<AuthRegister />} />
+        <Route
+          path="/auth/register"
+          element={
+            <ProtectAuth>
+              <AuthRegister />
+            </ProtectAuth>
+          }
+        />
+        <Route
+          path="/auth/login"
+          element={
+            <ProtectAuth>
+              <AuthLogin />
+            </ProtectAuth>
+          }
+        />
         <Route path="/cart" element={<Cart />} />
+        <Route path="/cart/checkout" element={<Checkout />} />
         <Route path="/product/:id" element={<ProductDetails replace />} />
-        <Route path="/admin/dashboard/*" element={<Dashboard />} />
+        <Route
+          path="/admin/dashboard/*"
+          element={
+            <ProtectDashboard>
+              <Dashboard />
+            </ProtectDashboard>
+          }
+        />
       </Routes>
     </div>
   );

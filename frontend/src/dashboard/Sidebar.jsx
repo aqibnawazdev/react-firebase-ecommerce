@@ -22,7 +22,7 @@ function Sidebar() {
           </span>
         </Link>
 
-        <Link to={"/admin/dashboard/manageproducts"}>
+        <Link to={"/admin/dashboard/manageprofile"}>
           <span className="hover:bg-black flex justify-start ps-2 py-2 w-full hover:text-white">
             Profile{" "}
           </span>
