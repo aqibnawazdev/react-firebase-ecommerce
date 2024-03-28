@@ -1,7 +1,12 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { GlobalContext } from "../globalContext/GlobalContext";
+import { collection, doc, serverTimestamp, setDoc } from "firebase/firestore";
+import { db } from "../config/firebase.config";
+import { dismissToast, showToastMessage } from "../utils/showToast";
+import { useNavigate } from "react-router-dom";
 
 function Checkout() {
+  const navigate = useNavigate();
   const { state } = useContext(GlobalContext);
   const calcTotalPrice = () => {
     return state.cart.reduce(
@@ -9,11 +14,72 @@ function Checkout() {
       0
     );
   };
+  const orderRef = doc(collection(db, "orders"));
+  const handleOrderSubmit = async (e) => {
+    e.preventDefault();
+    const data = new FormData(e.currentTarget);
+    const fullName = data.get("fullname");
+    const company = data.get("company");
+    const streetAddress = data.get("streetAddress");
+    const apartment = data.get("apartment");
+    const town = data.get("town");
+    const phoneNumber = data.get("phoneNumber");
+    const email = data.get("email");
+    const method = data.get("paymentmethod");
+    const userDetails = {
+      userId: state.currentUser.uid,
+      fullName,
+      company,
+      streetAddress,
+      apartment,
+      town,
+      phoneNumber,
+      email,
+    };
+
+    const productsDetails = state.cart.map((p) => {
+      return {
+        title: p.name,
+        quantity: p.quantity,
+        itemPrice: p.price,
+        subTotal: p.quantity * p.price,
+      };
+    });
+    const totalPrice = calcTotalPrice();
+    const order = {
+      user: userDetails,
+      products: productsDetails,
+      totalPrice,
+      method,
+      paymentStatus: false,
+      orderStatus: false,
+    };
+    console.log(order);
+    showToastMessage({ type: "loading", message: "Order processing..." });
+    await setDoc(orderRef, {
+      ...order,
+      cateatedAt: serverTimestamp(),
+      updatedAt: Date.now(),
+    }).then(() => {
+      dismissToast();
+      showToastMessage({
+        type: "success",
+        message: "Order placed successfull",
+      });
+      setTimeout(() => {
+        navigate(-1);
+      }, 1000);
+    });
+  };
   return (
     <div className="checkout w-full flex justify-center">
       <div className="w-[85%]">
         <h1 className="text-2xl mt-6">Billing Details</h1>
-        <form action="" className="mt-10 flex justify-between">
+        <form
+          action=""
+          className="mt-10 flex justify-between"
+          onSubmit={(e) => handleOrderSubmit(e)}
+        >
           <div className="left w-[40%]">
             <div className="flex flex-col gap-1">
               <label className="text-[#6b6b6b]" htmlFor="fullname">
@@ -110,11 +176,11 @@ function Checkout() {
           <div className="right flex flex-col w-[40%]">
             <div className="products flex flex-col justify-center gap-3 w-[80%]">
               {state.cart.map((item) => (
-                <div className="flex justify-between gap-4">
+                <div className="flex justify-between gap-4" key={item.pId}>
                   <div className="flex items-center gap-2">
                     <img
                       src={item.src}
-                      alt={item.title}
+                      alt={item.name}
                       className="w-[30px] h-[30px]"
                     />
                     <span className="text-sm">{item.name}</span>
@@ -147,13 +213,18 @@ function Checkout() {
             <div className="paymentMethod flex flex-col justify-center gap-2 mt-5  w-[80%]">
               <div className="flex justify-between gap-2 ">
                 <span className="flex gap-2 items-center">
-                  <input type="radio" name="paymentmethod" />
+                  <input type="radio" name="paymentmethod" value={"band"} />
                   <label htmlFor="bank">Bank</label>
                 </span>
                 <img src="/img/bank-logo.png" className="w-[120px]" alt="" />
               </div>
               <div className="flex gap-2 items-center text-sm">
-                <input type="radio" name="paymentmethod" id="cashondelivery" />
+                <input
+                  type="radio"
+                  name="paymentmethod"
+                  value={"cash"}
+                  id="cashondelivery"
+                />
                 <label htmlFor="cashondelivery">Cash on delivery</label>
               </div>
             </div>
@@ -167,7 +238,10 @@ function Checkout() {
                 Apply coupon
               </button>
             </div>
-            <button className="bg-red-500 self-start py-2 px-4 text-white text-sm rounded mt-5">
+            <button
+              className="bg-red-500 self-start py-2 px-4 text-white text-sm rounded mt-5"
+              type="submit"
+            >
               Place Order
             </button>
           </div>

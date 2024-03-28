@@ -126,7 +126,7 @@ function Header() {
                         <span className="relative">
                           <CiHeart size={25} className="mx-2 cursor-pointer" />
                           <button className="bg-red-500 w-4 h-4 rounded-full text-[10px] text-white absolute top-[-9px]">
-                            {2}
+                            {0}
                           </button>
                         </span>
                       </Link>
