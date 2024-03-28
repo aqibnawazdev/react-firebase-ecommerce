@@ -52,6 +52,11 @@ const GlobalReducer = (state, action) => {
         ...state,
         products: action.payload,
       };
+    case "ORDERS_FETCH":
+      return {
+        ...state,
+        orders: action.payload,
+      };
 
     default:
       return state;
@@ -62,6 +67,7 @@ const GolbalContextProvider = ({ children }) => {
   const [state, dispatch] = useReducer(GlobalReducer, initialState);
 
   const productRef = collection(db, "products");
+  const ordersRef = collection(db, "orders");
   useEffect(() => {
     const unsubscribe = onSnapshot(productRef, (querySnapshot) => {
       const products = [];
@@ -74,6 +80,7 @@ const GolbalContextProvider = ({ children }) => {
       });
       dispatch({ type: "PRODUCT_FETCH", payload: products });
     });
+
     const userdata = JSON.parse(localStorage.getItem("user"));
     if (userdata) {
       dispatch({ type: "AUTH_STATE_CHANGE", payload: userdata });

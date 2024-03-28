@@ -58,7 +58,7 @@ function Checkout() {
     showToastMessage({ type: "loading", message: "Order processing..." });
     await setDoc(orderRef, {
       ...order,
-      cateatedAt: serverTimestamp(),
+      createdAt: serverTimestamp(),
       updatedAt: Date.now(),
     }).then(() => {
       dismissToast();
@@ -67,7 +67,7 @@ function Checkout() {
         message: "Order placed successfull",
       });
       setTimeout(() => {
-        navigate(-1);
+        navigate("/myorders");
       }, 1000);
     });
   };

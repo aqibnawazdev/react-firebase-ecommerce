@@ -11,6 +11,7 @@ import Cart from "./pages/Cart";
 import Dashboard from "./dashboard/Dashboard";
 import { ProtectAuth, ProtectDashboard } from "./config/ProtectedRoutes";
 import Checkout from "./pages/Checkout";
+import MyOrders from "./pages/MyOrders";
 
 export default function App() {
   return (
@@ -37,6 +38,7 @@ export default function App() {
         />
         <Route path="/cart" element={<Cart />} />
         <Route path="/cart/checkout" element={<Checkout />} />
+        <Route path="/myorders" element={<MyOrders />} />
         <Route path="/product/:id" element={<ProductDetails replace />} />
         <Route
           path="/admin/dashboard/*"
